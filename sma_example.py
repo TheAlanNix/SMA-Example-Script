@@ -81,7 +81,13 @@ def save_config():
         json.dump(CONFIG_DATA, output_file, indent=4)
 
 
-def get_message_tracking_data(start_date, end_date, offset: int = 0, limit: int = 20):
+def get_message_tracking_data(start_date,
+                              end_date,
+                              content_filter_action: str = None,
+                              content_filter_direction: str = None,
+                              content_filter_name: str = None,
+                              offset: int = 0,
+                              limit: int = 20):
     """A function to retrieve message tracking data from the SMA."""
 
     print("Fetching data from the SMA...")
@@ -98,6 +104,12 @@ def get_message_tracking_data(start_date, end_date, offset: int = 0, limit: int 
         url = f"https://{CONFIG_DATA['SMA_HOSTNAME']}:6443/sma/api/v2.0/message-tracking/messages?" \
               f"startDate={start_date}.000Z&endDate={end_date}.000Z&ciscoHost=All_Hosts&searchOption=messages" \
               f"&offset={offset}&limit={limit}"
+
+        # Add Content Filter parameters if provided
+        if content_filter_action and content_filter_direction and content_filter_name:
+            url += f"&contentFiltersAction={content_filter_action}" \
+                   f"&contentFiltersDirection={content_filter_direction}" \
+                   f"&contentFiltersName={content_filter_name}"
 
         print(url)
 
@@ -117,6 +129,7 @@ def get_message_tracking_data(start_date, end_date, offset: int = 0, limit: int 
 
             else:
                 print(json.dumps(response.json(), indent=4))
+                exit()
         except Exception as err:
             print("Error fetching info from SMA: " + str(err))
 
