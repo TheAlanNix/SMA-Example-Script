@@ -1,4 +1,5 @@
 config.json
+csv_files/*
 
 venv/
 .vscode

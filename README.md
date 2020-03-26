@@ -4,7 +4,7 @@
 
 This is a simple example of how to interact with the Cisco Content Security Management Appliance (SMA) through the APIs that were added in AsyncOS 13.
 
-This sample script will gather data around all email messages sent/received in the last 7 days using the message tracking API.  The script will then filter the data for incoming email, and then organize the data by sender - storing the recipients and subjects for each message.  Finally, a CSV file is created for each sender which will list each incoming email, who the recipients were, and the subject of the message.
+This sample script will gather data around all email messages sent/received in the last day using the message tracking API.  The script will then filter the data for incoming email, and then organize the data by sender - storing the recipients and subjects for each message.  Finally, a CSV file is created for each sender which will list each incoming email, who the recipients were, and the subject of the message.
 
 ## Requirements
 

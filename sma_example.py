@@ -4,7 +4,7 @@
 This is an example Python script to demonstrate the API capabilities of
 the Cisco Content Security Management Appliance (SMA)
 
-This script will get all incoming emails for the past 7 days, and create a 
+This script will get all incoming emails for the past day, and create a
 CSV file for each sender listing the recipients and subjects of the emails.
 """
 
@@ -14,6 +14,7 @@ import getpass
 import json
 import os
 import shutil
+import time
 
 import requests
 
@@ -21,15 +22,18 @@ from datetime import datetime, timedelta
 from requests.auth import HTTPBasicAuth
 from requests.packages import urllib3
 
-# If receiving SSL Certificate Errors, un-comment the line below
-urllib3.disable_warnings()
+# Disable SSL Certificate warnings
+try:
+    urllib3.disable_warnings()
+except Exception as ex:
+    pass
 
 # Config Paramters
 CONFIG_FILE = "config.json"
 CONFIG_DATA = {}
 
-# Set a wait interval (in seconds) - Microsoft recommends an minimum of 1 hour
-INTERVAL = 3600
+# Set a wait interval (in seconds) - 1 Day
+INTERVAL = 86400
 
 
 ####################
@@ -77,7 +81,7 @@ def save_config():
         json.dump(CONFIG_DATA, output_file, indent=4)
 
 
-def get_message_tracking_data(start_date, end_date, offset:int = 0, limit:int = 20):
+def get_message_tracking_data(start_date, end_date, offset: int = 0, limit: int = 20):
     """A function to retrieve message tracking data from the SMA."""
 
     print("Fetching data from the SMA...")
@@ -126,7 +130,7 @@ def main():
     """This is the main function to run the SMA Example script."""
 
     # Make a timestamp for a week ago
-    seven_days_ago = datetime.utcnow().replace(second=0, microsecond=0) - timedelta(days=7)
+    seven_days_ago = datetime.utcnow().replace(second=0, microsecond=0) - timedelta(days=1)
 
     # Convert the timestamp to ISO Format
     start_date = seven_days_ago.isoformat()
@@ -137,7 +141,6 @@ def main():
     # Get the last weeks worth of messages from the SMA
     message_data = get_message_tracking_data(start_date, end_date)
 
-    #print(json.dumps(data, indent=2))
     print(f"Messages retrieved: {len(message_data)}")
 
     csv_data = {}
@@ -187,7 +190,7 @@ if __name__ == "__main__":
 
     # Set up an argument parser
     parser = argparse.ArgumentParser(
-        description="A script to get data from a Cisco Content Security Management Appliance (SMA) " \
+        description="A script to get data from a Cisco Content Security Management Appliance (SMA) "
                     "and generate organized CSV files from it."
     )
     parser.add_argument("-d", "--daemon", help="Run the script as a daemon", action="store_true")
