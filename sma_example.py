@@ -142,7 +142,7 @@ def get_message_tracking_data(start_date,
 def main():
     """This is the main function to run the SMA Example script."""
 
-    # Make a timestamp for a week ago
+    # Make a timestamp for a day ago
     seven_days_ago = datetime.utcnow().replace(second=0, microsecond=0) - timedelta(days=1)
 
     # Convert the timestamp to ISO Format
@@ -151,7 +151,7 @@ def main():
     # Get the current timestamp in ISO Format
     end_date = datetime.utcnow().replace(second=0, microsecond=0).isoformat()
 
-    # Get the last weeks worth of messages from the SMA
+    # Get the last days worth of messages from the SMA
     message_data = get_message_tracking_data(start_date, end_date)
 
     print(f"Messages retrieved: {len(message_data)}")
